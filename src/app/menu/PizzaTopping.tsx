@@ -1,9 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Pizza, PizzaSize, PizzaTable, ToppingsTable, Topping, useStore } from "./store";
+import { ToppingsTable, type Topping } from "./store";
 
 
 

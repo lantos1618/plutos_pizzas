@@ -1,7 +1,7 @@
 "use client";
+import { PizzaSizeSelector } from "./PizzaSizeSelector";
+import { PizzaToppingSelector } from "./PizzaTopping";
 import { useStore, type Pizza, type PizzaSize,  type Topping, getDefaultPizza } from "./store";
-import { PizzaSizeSelector } from "./pizza-size-selector";
-import { PizzaToppingSelector } from "./pizza-topping";
 import { useEffect } from "react";
 
 

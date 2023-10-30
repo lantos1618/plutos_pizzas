@@ -7,7 +7,10 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
-      },
+        mono: ["var(--font-mono)", ...fontFamily.mono],
+        rounded: ['"M PLUS Rounded 1c"', 'sans-serif'],
+
+      }
     },
   },
   plugins: [],

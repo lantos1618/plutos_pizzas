@@ -2,11 +2,16 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ToppingsTable, type Topping } from "./store";
+import { ToppingsTable, type Topping } from "../store";
 
 
 
-export function PizzaToppingSelector({ onChange, defaultValue }: { onChange: (toppings: Topping[]) => void, defaultValue?: Topping[]}) {
+type PizzaToppingSelectorProps = {
+    onChange: (toppings: Topping[]) => void,
+    defaultValue?: Topping[]
+}
+
+export function PizzaToppingSelector({ onChange, defaultValue }: PizzaToppingSelectorProps) {
     const [pizzaToppings, setPizzaToppings] = useState<Topping[]>(defaultValue ?? []);
 
     const handleToppingClick = (topping: Topping) => {
@@ -22,14 +27,14 @@ export function PizzaToppingSelector({ onChange, defaultValue }: { onChange: (to
     useEffect(() => {
         onChange(pizzaToppings)
     }, [onChange, pizzaToppings])
-       
+
     return (
         <div className="grid grid-cols-3 gap-4">
             {ToppingsTable.map((topping, index) => (
                 <div
                     key={index}
                     className={
-                        "flex flex-col items-center cursor-pointer p-4 border border-gray-300 rounded-lg" + 
+                        "flex flex-col items-center cursor-pointer p-4 border border-gray-300 rounded-lg" +
                         (pizzaToppings.includes(topping) ? " bg-blue-100" : "")
                     }
                     onClick={() => handleToppingClick(topping)}

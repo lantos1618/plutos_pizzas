@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "./store";
+import { useStore } from "../store";
 
 export function OrderNotes() {
     const notes = useStore((state) => state.notes);

@@ -1,6 +1,6 @@
 "use client";
 import { PizzasComponent, PizzaEditComponent } from "./PizzaComponent";
-import { useStore, getDefaultPizza } from "./store";
+import { useStore, getDefaultPizza } from "../store";
 
 export function OrderComponent() {
   // const [currentEditPizza, setCurrentEditPizza] = useState<Pizza | undefined>(undefined)

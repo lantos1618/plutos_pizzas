@@ -1,12 +1,20 @@
 "use client";
+import { useSearchParams } from "next/navigation";
 import { PizzaSizeSelector } from "./PizzaSizeSelector";
 import { PizzaToppingSelector } from "./PizzaTopping";
-import { useStore, type Pizza, type PizzaSize, type Topping, getDefaultPizza } from "./store";
+import { useStore, type Pizza, type PizzaSize, type Topping, getDefaultPizza } from "../store";
 import { useEffect } from "react";
 
 
 export function PizzaStoreDebug() {
   const store = useStore(store => store.pizzas);
+
+  const search = useSearchParams();
+  const debug = search.get("debug");
+  if (!debug) {
+    return null;
+  }
+
   return (
     <>
       <pre>{JSON.stringify(store, null, 4)}</pre>
@@ -101,24 +109,44 @@ export function PizzasComponent() {
   return (
     <ul className="list-disc list-inside">
       {pizzas.map((pizza) => (
-        <li key={pizza.id} className="mb-2 space-x-2">
-          <button
-            onClick={() => handleEditPizza(pizza)}
-            className="ml-4 px-2 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => handleRemovePizza(pizza)}
-            className="ml-4 px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-700"
-          >
-            Delete
-          </button>
-          <span className="font-semibold">{pizza.size}</span> - {pizza.toppings.map(t => t.name).join(", ")}
-          {currentEditPizza && currentEditPizza.id == pizza.id && <PizzaEditComponent pizza={currentEditPizza} />}
-        </li>
+        <PizzaListItem
+          key={pizza.id}
+          pizza={pizza}
+          handleEditPizza={handleEditPizza}
+          handleRemovePizza={handleRemovePizza}
+          currentEditPizza={currentEditPizza}
+        />
       ))}
     </ul>
   )
 
 }
+
+// PizzaListItemProps
+
+type PizzaListItemProps = {
+  pizza: Pizza,
+  handleEditPizza: (pizza: Pizza) => void,
+  handleRemovePizza: (pizza: Pizza) => void,
+  currentEditPizza: Pizza | undefined
+}
+
+function PizzaListItem({ pizza, handleEditPizza, handleRemovePizza, currentEditPizza }: PizzaListItemProps) {
+  return <li key={pizza.id} className="mb-2 space-x-2">
+    <button
+      onClick={() => handleEditPizza(pizza)}
+      className="ml-4 px-2 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+    >
+      Edit
+    </button>
+    <button
+      onClick={() => handleRemovePizza(pizza)}
+      className="ml-4 px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-700"
+    >
+      Delete
+    </button>
+    <span className="font-semibold">{pizza.size}</span> {pizza.toppings?.map((topping) => topping).join(", ")}
+    {currentEditPizza && currentEditPizza.id == pizza.id && <PizzaEditComponent pizza={currentEditPizza} />}
+  </li>;
+}
+

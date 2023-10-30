@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "./store";
+import { useStore } from "../store";
 
 export function OrderAllergies() {
     const allergies = useStore((state) => state.allergies);

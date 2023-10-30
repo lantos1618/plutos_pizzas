@@ -43,8 +43,8 @@ export const ToppingsTable: Topping[] = [
 
 const DefaultPizza = {
     id: undefined,
-    size: PizzaSize.SMALL,
-    toppings: [],
+    size: undefined,
+    toppings: undefined
 } 
 
 export function getDefaultPizza(): Pizza {
@@ -76,6 +76,15 @@ export function calcPizzaPrice(pizza: Pizza) {
     // this is a dumb pricing function,
     //  we would ideally use Data Model in a more complicated system
     // but this is actually sufficient for the demo
+    if (pizza.size == null) {
+        console.error("Nill Pizza, no size", pizza)
+        return 0
+    }
+    if (pizza.toppings == null) {
+        console.error("Nill Pizza, no toppings", pizza)
+        return 0
+    }
+
     const { size, toppings } = pizza
     const toppingsCount = toppings.length
     const {price, freeToppings } = PizzaTable[size]
@@ -87,8 +96,8 @@ export function calcPizzaPrice(pizza: Pizza) {
 
 export type Pizza = {
     id?: string;
-    size: PizzaSize;
-    toppings: Topping[];
+    size?: PizzaSize;
+    toppings?: Topping[];
 };
 
 

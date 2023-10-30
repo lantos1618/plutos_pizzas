@@ -5,6 +5,10 @@
 await import("./src/env.mjs");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+    images: {
+        domains: ["media.discordapp.net", "cdn.discordapp.com"],
+    },
+};
 
 export default config;

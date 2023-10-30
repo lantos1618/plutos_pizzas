@@ -1,5 +1,6 @@
 import { api } from "~/trpc/server";
-import {OrderComponent, PizzaStoreDebug}  from "./pizza-component";
+import {PizzaStoreDebug}  from "./pizza-component";
+import { OrderComponent } from "./OrderComponent";
 import { useStore } from "./store";
 import { OrderAllergies } from "./order-allergies";
 import { OrderNotes } from "./order-notes";

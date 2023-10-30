@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useStore, Pizza, PizzaSize,  Topping, getDefaultPizza } from "./store";
+import { useStore, type Pizza, type PizzaSize,  type Topping, getDefaultPizza } from "./store";
 import { PizzaSizeSelector } from "./pizza-size-selector";
 import { PizzaToppingSelector } from "./pizza-topping";
+import { useEffect } from "react";
 
 
 export function PizzaStoreDebug() {
@@ -15,7 +15,7 @@ export function PizzaStoreDebug() {
   )
 }
 
-function PizzaEditComponent({ pizza }: { pizza?: Pizza }) {
+export function PizzaEditComponent({ pizza }: { pizza?: Pizza }) {
 
 
   const currentEditPizza = useStore((state) => state.currentEditPizza);
@@ -101,9 +101,7 @@ export function PizzasComponent() {
   return (
     <ul className="list-disc list-inside">
       {pizzas.map((pizza) => (
-        <li key={pizza.id} className="mb-2">
-
-          <span className="font-semibold">{pizza.size}</span> - {pizza.toppings.map(t => t.name).join(", ")}
+        <li key={pizza.id} className="mb-2 space-x-2">
           <button
             onClick={() => handleEditPizza(pizza)}
             className="ml-4 px-2 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
@@ -116,38 +114,11 @@ export function PizzasComponent() {
             >
             Delete
             </button>
+          <span className="font-semibold">{pizza.size}</span> - {pizza.toppings.map(t => t.name).join(", ")}
           {currentEditPizza && currentEditPizza.id == pizza.id && <PizzaEditComponent pizza={currentEditPizza} />}
-        
-
         </li>
       ))}
     </ul>
   )
 
-}
-export function OrderComponent() {
-  // const [currentEditPizza, setCurrentEditPizza] = useState<Pizza | undefined>(undefined)
-  const currentEditPizza = useStore((state) => state.currentEditPizza);
-  const setCurrentEditPizza = useStore((state) => state.setCurrentEditPizza);
-
-  const handleAddPizza = () => {
-    setCurrentEditPizza(getDefaultPizza());
-  }
-
-  return (
-    <div className="flex flex-col">
-      <h2 className="text-2xl font-bold mb-4">Pizzas</h2>
-      <PizzasComponent />
-      {currentEditPizza && !currentEditPizza.id && <PizzaEditComponent pizza={currentEditPizza} />}
-      <div className="mt-4">
-        <button
-          onClick={handleAddPizza}
-          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 mr-2"
-        >
-          Add Pizza
-        </button>
-
-      </div>
-    </div>
-  );
 }

@@ -1,7 +1,7 @@
 "use client";
 import { PizzaSizeSelector } from "./PizzaSizeSelector";
 import { PizzaToppingSelector } from "./PizzaTopping";
-import { useStore, type Pizza, type PizzaSize,  type Topping, getDefaultPizza } from "./store";
+import { useStore, type Pizza, type PizzaSize, type Topping, getDefaultPizza } from "./store";
 import { useEffect } from "react";
 
 
@@ -9,8 +9,8 @@ export function PizzaStoreDebug() {
   const store = useStore(store => store.pizzas);
   return (
     <>
-    <pre>{JSON.stringify(store, null, 4)}</pre>
-    <pre>{JSON.stringify(getDefaultPizza(), null, 4)}</pre>
+      <pre>{JSON.stringify(store, null, 4)}</pre>
+      <pre>{JSON.stringify(getDefaultPizza(), null, 4)}</pre>
     </>
   )
 }
@@ -111,9 +111,9 @@ export function PizzasComponent() {
           <button
             onClick={() => handleRemovePizza(pizza)}
             className="ml-4 px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-700"
-            >
+          >
             Delete
-            </button>
+          </button>
           <span className="font-semibold">{pizza.size}</span> - {pizza.toppings.map(t => t.name).join(", ")}
           {currentEditPizza && currentEditPizza.id == pizza.id && <PizzaEditComponent pizza={currentEditPizza} />}
         </li>

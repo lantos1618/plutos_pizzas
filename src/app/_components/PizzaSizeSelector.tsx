@@ -1,8 +1,10 @@
 "use client";
 
 
-import { useEffect, useState } from "react";
-import { PizzaSize, PizzaTable } from "../store";
+import { use, useEffect, useState } from "react";
+import { PizzaSize, PizzaTable, usePizzaStore } from "../pizzaStore";
+
+
 
 export function SmallPizza() {
     return <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 32 32" focusable="false" aria-hidden="false" aria-label="Small 9.5&quot;" > <path d="M19.003 20.497a1 1 0 110 2 1 1 0 110-2zM16.2 25.703a9.716 9.716 0 008.116-4.678L16.2 16.347v9.356zM22.506 17a1 1 0 110-2 1 1 0 110 2zm2.01-5.678L16.4 16l8.116 4.678c.766-1.387 1.203-2.981 1.203-4.678s-.438-3.291-1.203-4.678zM12.997 9.503a1 1 0 110 2 1 1 0 110-2zm-5.313 1.472l8.116 4.678V6.297a9.716 9.716 0 00-8.116 4.678zm11.319.528a1 1 0 110-2 1 1 0 110 2zM16.2 6.297v9.356l8.116-4.678A9.716 9.716 0 0016.2 6.297zM9.494 17a1 1 0 110-2 1 1 0 110 2zm-2.01-5.678C6.718 12.709 6.281 14.303 6.281 16s.438 3.291 1.203 4.678L15.6 16l-8.116-4.678zm5.513 9.175a1 1 0 110 2 1 1 0 110-2zm2.803 5.206v-9.356l-8.116 4.678a9.716 9.716 0 008.116 4.678z"></path></svg>
@@ -25,7 +27,7 @@ type PizzaSizeLabelProps = {
 
 export function PizzaSizeLabel({ sizeInch, freeToppings, price }: PizzaSizeLabelProps) {
     return (
-        <div className="p-10">
+        <div className="p-2 text-center ">
             {sizeInch}&quot;<br />
             {freeToppings} Toppings included<br />
             £{price}<br />
@@ -33,53 +35,56 @@ export function PizzaSizeLabel({ sizeInch, freeToppings, price }: PizzaSizeLabel
     )
 }
 
-type PizzaSizeSelectorProps = {
-    onChange: (size: PizzaSize) => void,
-    defaultValue?: PizzaSize
-}
+export function PizzaSizeSelector() {
+    const currentPizza = usePizzaStore((state) => state.currentPizza);
+    const updatePizza = usePizzaStore((state) => state.updatePizza);
 
-export const PizzaSizeSelector = ({ onChange, defaultValue }: PizzaSizeSelectorProps) => {
-
-    const [pizzaSize, setPizzaSize] = useState<PizzaSize>(defaultValue ?? PizzaSize.SMALL);
-
-    useEffect(() => {
-        onChange(pizzaSize)
-    }, [onChange, pizzaSize])
+    const handleSizeClick = (size: PizzaSize) => {
+        if (!currentPizza) { return }
+        const updatedPizza = { ...currentPizza, size };
+        updatePizza(updatedPizza);
+    }
 
     const highlighted = "text-blue-700 fill-blue-700"
     const unhighlighted = "text-black fill-black"
-    return (
-        <div className="flex">
+
+    return <div className="flex flex-col gap-4">
+        <h2 className="text-2xl font-bold">Size</h2>
+        <div className='flex flex-row items-center self-center gap-4'>
             <div
-                className={`flex flex-col ${pizzaSize == PizzaSize.SMALL ? highlighted : unhighlighted} `}
-                onClick={() => {
-                    setPizzaSize(PizzaSize.SMALL)
-                }}
+                className={"flex flex-col cursor-pointer " +
+                    (currentPizza?.size === "small" ? highlighted : unhighlighted)
+                }
+                onClick={() => handleSizeClick("small")}
             >
                 <SmallPizza />
-                <PizzaSizeLabel {...PizzaTable.SMALL} />
+                <PizzaSizeLabel {...PizzaTable.small} />
             </div>
-
             <div
-                className={`flex flex-col ${pizzaSize == PizzaSize.MEDIUM ? highlighted : unhighlighted}`}
-                onClick={() => {
-                    setPizzaSize(PizzaSize.MEDIUM)
-                }}
-            >
+                className={"flex flex-col cursor-pointer " +
+                    (currentPizza?.size === "medium" ? highlighted : unhighlighted)
+                }
+                onClick={() => handleSizeClick("medium")}>
                 <MediumPizza />
-                <PizzaSizeLabel {...PizzaTable.MEDIUM} />
-
+                <PizzaSizeLabel {...PizzaTable.medium} />
             </div>
             <div
-                className={`flex flex-col ${pizzaSize == PizzaSize.LARGE ? highlighted : unhighlighted}`}
-                onClick={() => {
-                    setPizzaSize(PizzaSize.LARGE)
-                }}
-            >
+                className={"flex flex-col cursor-pointer " +
+                    (currentPizza?.size === "large" ? highlighted : unhighlighted)
+                }
+                onClick={() => handleSizeClick("large")}>
                 <LargePizza />
-                <PizzaSizeLabel {...PizzaTable.LARGE} />
-
+                <PizzaSizeLabel {...PizzaTable.large} />
             </div>
         </div>
-    );
-};
+    </div>;
+}
+
+
+export function Checkout() {
+    return (
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            Checkout
+        </button>
+    )
+}

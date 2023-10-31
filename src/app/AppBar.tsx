@@ -19,7 +19,6 @@ export function AppBar() {
   }, []);
 
   useEffect(() => {
-    console.log("scrolled ,"  + scrollY)
     const alpha = Math.min(.5,  scrollY / 200);
     const rgb = "0,0,0";
     if (scrollY > 0) {
@@ -35,12 +34,12 @@ export function AppBar() {
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <Image src={"/images/logo.png"} width={32} height={32} alt={"logo"} />
-            <div className="font-bold">Pluto Pizzas</div>
+            <div className="font-bold font-rounded">Pluto Pizzas</div>
           </div>
           <div className="space-x-4">
             <Link href="#about">About Us</Link>
             <Link href="#contact">Contact</Link>
-            <Link href="#order">Order</Link>
+            {/* <Link href="#order">Order</Link> */}
           </div>
         </div>
       </div>

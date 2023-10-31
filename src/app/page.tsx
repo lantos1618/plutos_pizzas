@@ -1,8 +1,9 @@
 
 
 import { useRouter } from "next/navigation";
-import { AppBar } from "./AppBar";
+import { AppBar } from "./_components/AppBar";
 import { OrderArrow, OrderComponent } from "./_components/PizzaComponent";
+import { getServerAuthSession } from "~/server/auth";
 
 
 
@@ -21,10 +22,12 @@ function HeroLanding() {
   );
 }
 
-function OrderSection() {
+async function OrderSection() {
+  const  session  = await getServerAuthSession();
+
   return (
     <section id="order" className="p-10">
-      <OrderComponent />
+      <OrderComponent session={session}/>
     </section>
   );
 }
@@ -86,12 +89,13 @@ function Contact() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerAuthSession();
   return (
     <div className="relative min-h-screen bg-gray-100">
-      <AppBar />
+      <AppBar session={session} />
       <HeroLanding />
-      <OrderSection />
+      <OrderSection  />
       <AboutUs />
       <Contact />
     </div>

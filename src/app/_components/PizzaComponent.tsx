@@ -6,6 +6,9 @@ import { PizzaList } from "./PizzaList";
 import { Checkout, PizzaSizeSelector } from "./PizzaSizeSelector";
 import { PizzaToppingsSelector } from "./PizzaToppingSelector";
 import Link from "next/link";
+import { getServerAuthSession } from "~/server/auth";
+import { useEffect, useState } from "react";
+import { type Session } from "next-auth";
 
 export function OrderArrow() {
   const navigate = useRouter();
@@ -17,8 +20,8 @@ export function OrderArrow() {
         navigate.push("#order");
       }}
     >
-      <Link href="#order">Order</Link>
-      <svg width={38} height={38} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="KeyboardArrowDownIcon"><path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path></svg>
+      <Link href="#order" className=" font-bold text-lg">Order</Link>
+      <svg width={50} height={50} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="KeyboardArrowDownIcon"><path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path></svg>
     </div>
   )
 }
@@ -49,17 +52,28 @@ export function PizzaEditor() {
   );
 }
 
-export function OrderComponent() {
+
+export function OrderComponent({ session }: { session: Session | null }) {
 
   return (
     <div className='flex flex-col p-10 gap-4'>
       <h1 className="text-4xl font-bold">Order</h1>
-      <PizzaList />
-      <div className="flex flex-row gap-4 items-center">
-        <AddNewPizza />
-        <Checkout />
-      </div>
-      <PizzaEditor />
+
+      {
+        session ?
+          <>
+            <PizzaList />
+            <div className="flex flex-row gap-4 items-center">
+              <AddNewPizza />
+              <Checkout />
+            </div>
+            <PizzaEditor />
+          </>
+          : <>
+            <h2 className="text-2xl font-bold">Sign in to order</h2>
+            <Link className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" href="/api/auth/signin">Sign in</Link>
+          </>
+      }
     </div>
   );
 }

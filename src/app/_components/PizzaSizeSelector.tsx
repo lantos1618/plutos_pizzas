@@ -1,8 +1,8 @@
 "use client";
 
 
-import { use, useEffect, useState } from "react";
-import { PizzaSize, PizzaTable, usePizzaStore } from "../pizzaStore";
+import { api } from "~/trpc/react";
+import { type PizzaSize, PizzaTable, usePizzaStore } from "../pizzaStore";
 
 
 
@@ -29,7 +29,7 @@ export function PizzaSizeLabel({ sizeInch, freeToppings, price }: PizzaSizeLabel
     return (
         <div className="p-2 text-center ">
             {sizeInch}&quot;<br />
-            {freeToppings} Toppings included<br />
+            {freeToppings} Toppings included<br/>
             £{price}<br />
         </div>
     )
@@ -82,6 +82,15 @@ export function PizzaSizeSelector() {
 
 
 export function Checkout() {
+
+    const pizzas = usePizzaStore((state) => state.pizzas);
+
+    const createOrder = api.pluto.createOrder.useMutation();
+
+    const handleCheckout = async () => {
+        await createOrder.mutateAsync(pizzas);
+    }
+
     return (
         <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Checkout

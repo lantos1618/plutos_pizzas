@@ -79,6 +79,7 @@ enum PaymentStatus {
   PENDING
   PAID
   FAILED
+  PAYMENT_ON_DELIVERY
 }
 
 enum OrderStatus {

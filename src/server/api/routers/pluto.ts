@@ -3,7 +3,6 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   protectedProcedure,
-  publicProcedure,
 } from "~/server/api/trpc";
 
 export const plutoRouter = createTRPCRouter({
@@ -31,7 +30,7 @@ export const plutoRouter = createTRPCRouter({
 
         data: {
           orderStatus: "PREPARATION",
-          paymentStatus: "PENDING",
+          paymentStatus: "PAYMENT_ON_DELIVERY",
           customerId: ctx.session.user.id,
           // pizzas
           pizzas: {
@@ -50,7 +49,12 @@ export const plutoRouter = createTRPCRouter({
     }),
   // orders 
   getOrders: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.order.findMany({});
+    return ctx.db.order.findMany({
+      include: { 
+        pizzas: true,
+        customer: true,
+       },
+    });
   }),
   getOrder: protectedProcedure.input(z.object({
     orderId: z.number()

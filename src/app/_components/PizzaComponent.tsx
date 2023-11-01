@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Address, usePizzaStore } from "../pizzaStore";
 import { PizzaList } from "./PizzaList";
 import { PizzaSizeSelector } from "./PizzaSizeSelector";
@@ -104,14 +104,14 @@ export function Checkout() {
     });
     const orderID = result.id; 
     if (orderID) {
+      // redirect(`/order?orderId=${orderID}`);  nextjs navigation not working atm 
       window.location.href = `/order?orderId=${orderID}`;
-
     }
     // setLoading(false);
 };
 return (
   <div className="p-6 max-w-xl mx-auto bg-white flex flex-col items-center gap-4 overflow-auto">
-    <form onSubmit={handleSubmit} className="w-full p-2">
+    <form onSubmit={handleSubmit} className="w-full p-2" >
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">Delivery Details</h2>
         <p>Where should we deliver your pizza?</p>

@@ -4,9 +4,10 @@ import Image from "next/image";
 import React, { useState } from 'react';
 import { useEffect } from "react";
 import { type Session } from "next-auth";
+import { redirect } from "next/navigation"
 
 export function AppBar({ session }: { session: Session | null }) {
-  const [scrollY, setScrollY] = useState(window.scrollY);
+  const [scrollY, setScrollY] = useState(0);
   const [background, setBackground] = useState("rgba(0,0,0,0)");
 
   // make the background fade in when scrolling down
@@ -35,7 +36,8 @@ export function AppBar({ session }: { session: Session | null }) {
         <div className="flex justify-between items-center">
           <div
             onClick={() => {
-              window.location.href = "/";
+              redirect("/");
+              // window.location.href = "/";
             }}
           className="flex items-center space-x-4 cursor-pointer">
             <Image src={"/images/logo.png"} width={32} height={32} alt={"logo"} />

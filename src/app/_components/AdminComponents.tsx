@@ -2,10 +2,9 @@
 
 import { type Session } from "next-auth";
 import Link from "next/link";
-import { useRouter } from "next/router"; // Changed from "next/navigation"
 
 import { api } from "~/trpc/react";
-import { RouterInputs, type RouterOutputs } from "~/trpc/shared";
+import { type RouterOutputs } from "~/trpc/shared";
 
 type Order = RouterOutputs['pluto']['getOrders'][0]
 

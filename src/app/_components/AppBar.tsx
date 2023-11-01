@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { type Session } from "next-auth";
 
 export function AppBar({ session }: { session: Session | null }) {
-  const [scrollY, setScrollY] = useState(0);
+  const [scrollY, setScrollY] = useState(window.scrollY);
   const [background, setBackground] = useState("rgba(0,0,0,0)");
 
   // make the background fade in when scrolling down
@@ -33,7 +33,11 @@ export function AppBar({ session }: { session: Session | null }) {
     <nav className="fixed top-0 left-0 right-0 z-50 p-4 text-white" style={{ background }}>
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-4">
+          <div
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          className="flex items-center space-x-4 cursor-pointer">
             <Image src={"/images/logo.png"} width={32} height={32} alt={"logo"} />
             <div className="font-bold font-rounded">Pluto Pizzas</div>
           </div>
@@ -43,8 +47,8 @@ export function AppBar({ session }: { session: Session | null }) {
               <Link className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" href="/api/auth/signout">Sign out</Link> :
               <Link className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" href="/api/auth/signin">Sign in</Link>
             }
-            <Link href="#about">About Us</Link>
-            <Link href="#contact">Contact</Link>
+            <Link href="/#about">About Us</Link>
+            <Link href="/#contact">Contact</Link>
           </div>
         </div>
       </div>

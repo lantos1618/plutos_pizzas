@@ -61,14 +61,6 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Topping {
-  id       Int    @id @default(autoincrement())
-  category String
-  name     String
-  Pizza    Pizza? @relation(fields: [pizzaId], references: [id])
-  pizzaId  Int?
-}
-
 enum PizzaSize {
   SMALL
   MEDIUM
@@ -77,9 +69,8 @@ enum PizzaSize {
 
 model Pizza {
   id       Int       @id @default(autoincrement())
-  name     String
   size     PizzaSize
-  toppings Topping[]
+  toppings String[]
   Order    Order?    @relation(fields: [orderId], references: [id])
   orderId  Int?
 }
@@ -104,6 +95,7 @@ model Order {
   customerId    String
   customer      User          @relation(fields: [customerId], references: [id])
   pizzas        Pizza[]
+  notes         String?
   paymentStatus PaymentStatus
   orderStatus   OrderStatus
 }

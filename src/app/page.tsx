@@ -11,12 +11,12 @@ import { getServerAuthSession } from "~/server/auth";
 function HeroLanding() {
   const backgroundImage = "url(https://cdn.discordapp.com/attachments/1115663218048774277/1168545336906756157/DALLE_2023-10-30_13.41.43_-_Photo_of_a_top-down_view_of_a_simple_pizza_directly_placed_against_a_dark_infinity_wall_background._The_pizza_has_basic_toppings_like_cheese_and_tomat.png)";
   return (
-    <section className="relative justify-center h-[90vh] bg-center bg-cover bg-fixed" style={{ backgroundImage }}>
-      <div className="relative z-10 h-full flex flex-col justify-center items-center text-white">
+    <section className="relative justify-center h-[80vh] bg-center bg-cover bg-fixed" style={{ backgroundImage }}>
+      <div className="absolute z-2 inset-0 bg-black opacity-50 "></div>
+      <div className="relative z-6 h-full flex flex-col justify-center items-center text-white">
         <h1 className="text-4xl font-bold font-rounded" >Pluto Pizzas</h1>
         <p className="mt-4 text-2xl font-rounded " >Taste the Universe</p>
       </div>
-      <div className="absolute inset-0 bg-black opacity-50 "></div>
       <OrderArrow />
     </section>
   );
@@ -92,12 +92,12 @@ function Contact() {
 export default async function Home() {
   const session = await getServerAuthSession();
   return (
-    <div className="relative min-h-screen bg-gray-100">
+    <main className="relative min-h-screen bg-gray-100">
       <AppBar session={session} />
       <HeroLanding />
       <OrderSection  />
       <AboutUs />
       <Contact />
-    </div>
+    </main>
   );
 }

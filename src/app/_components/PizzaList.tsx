@@ -1,12 +1,12 @@
-import { type Pizza, usePizzaStore, calcPizzaPrice } from "../pizzaStore";
+import { type _Pizza, usePizzaStore, calcPizzaPrice } from "../pizzaStore";
 
 export function ClearIcon({ onClick }: { onClick: () => void }) {
     return (
-        <svg onClick={onClick} width={24} height={24} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testId="ClearIcon"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        <svg onClick={onClick} width={24} height={24} focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
     )
 }
 
-export function PizzaListItem({ pizza, index }: { pizza: Pizza, index: number }) {
+export function PizzaListItem({ pizza, index }: { pizza: _Pizza, index: number }) {
     const currentPizza = usePizzaStore((state) => state.currentPizza);
     const selectPizza = usePizzaStore((state) => state.selectPizza);
     const removePizza = usePizzaStore((state) => state.removePizza); 

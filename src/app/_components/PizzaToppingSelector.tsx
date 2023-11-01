@@ -1,4 +1,4 @@
-import { type Topping, ToppingsTable, usePizzaStore } from "../pizzaStore";
+import { type _Topping, ToppingsTable, usePizzaStore } from "../pizzaStore";
 import Image from 'next/image';
 
 
@@ -8,7 +8,7 @@ export function PizzaToppingsSelector() {
   const updatePizza = usePizzaStore((state) => state.updatePizza);
 
 
-  const handleToppingClick = (topping: Topping) => {
+  const handleToppingClick = (topping: _Topping) => {
     if (!currentPizza) { return }
     // toggle topping
 

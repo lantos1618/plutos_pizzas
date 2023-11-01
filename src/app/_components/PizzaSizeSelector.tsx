@@ -2,7 +2,7 @@
 
 
 import { api } from "~/trpc/react";
-import { type PizzaSize, PizzaTable, usePizzaStore } from "../pizzaStore";
+import { type _PizzaSize, _PizzaTable, usePizzaStore } from "../pizzaStore";
 
 
 
@@ -39,13 +39,13 @@ export function PizzaSizeSelector() {
     const currentPizza = usePizzaStore((state) => state.currentPizza);
     const updatePizza = usePizzaStore((state) => state.updatePizza);
 
-    const handleSizeClick = (size: PizzaSize) => {
+    const handleSizeClick = (size: _PizzaSize) => {
         if (!currentPizza) { return }
         const updatedPizza = { ...currentPizza, size };
         updatePizza(updatedPizza);
     }
 
-    const highlighted = "text-blue-700 fill-blue-700"
+    const highlighted = "text-blue-700 fill-orange-400"
     const unhighlighted = "text-black fill-black"
 
     return <div className="flex flex-col gap-4">
@@ -53,47 +53,30 @@ export function PizzaSizeSelector() {
         <div className='flex flex-row items-center self-center gap-4'>
             <div
                 className={"flex flex-col cursor-pointer " +
-                    (currentPizza?.size === "small" ? highlighted : unhighlighted)
+                    (currentPizza?.size === "SMALL" ? highlighted : unhighlighted)
                 }
-                onClick={() => handleSizeClick("small")}
+                onClick={() => handleSizeClick("SMALL")}
             >
                 <SmallPizza />
-                <PizzaSizeLabel {...PizzaTable.small} />
+                <PizzaSizeLabel {..._PizzaTable.SMALL} />
             </div>
             <div
                 className={"flex flex-col cursor-pointer " +
-                    (currentPizza?.size === "medium" ? highlighted : unhighlighted)
+                    (currentPizza?.size === "MEDIUM" ? highlighted : unhighlighted)
                 }
-                onClick={() => handleSizeClick("medium")}>
+                onClick={() => handleSizeClick("MEDIUM")}>
                 <MediumPizza />
-                <PizzaSizeLabel {...PizzaTable.medium} />
+                <PizzaSizeLabel {..._PizzaTable.MEDIUM} />
             </div>
             <div
                 className={"flex flex-col cursor-pointer " +
-                    (currentPizza?.size === "large" ? highlighted : unhighlighted)
+                    (currentPizza?.size === "LARGE" ? highlighted : unhighlighted)
                 }
-                onClick={() => handleSizeClick("large")}>
+                onClick={() => handleSizeClick("LARGE")}>
                 <LargePizza />
-                <PizzaSizeLabel {...PizzaTable.large} />
+                <PizzaSizeLabel {..._PizzaTable.LARGE} />
             </div>
         </div>
     </div>;
 }
 
-
-export function Checkout() {
-
-    const pizzas = usePizzaStore((state) => state.pizzas);
-
-    const createOrder = api.pluto.createOrder.useMutation();
-
-    const handleCheckout = async () => {
-        await createOrder.mutateAsync(pizzas);
-    }
-
-    return (
-        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            Checkout
-        </button>
-    )
-}

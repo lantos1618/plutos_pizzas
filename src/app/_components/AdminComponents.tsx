@@ -154,7 +154,7 @@ export function AdminOrderComponent({ session }: { session: Session | null }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.data?.map((order, index) => (
+                        {orders.data?.sort((a,b) => a.createdAt > b.createdAt ? -1 : 1).map((order, index) => (
                             <AdminOrderRowComponent key={index} order={order} setSelectedOrder={setSelectedOrder} highlighted={selectedOrder?.id === order.id} />
                         ))}
                     </tbody>

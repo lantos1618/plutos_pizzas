@@ -83,6 +83,9 @@ export const plutoRouter = createTRPCRouter({
         customer: true,
         address: true,
        },
+       orderBy: {
+         createdAt: "desc"
+      }
     });
   }),
   getOrder: protectedProcedure.input(z.object({

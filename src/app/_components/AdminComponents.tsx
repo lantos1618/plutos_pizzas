@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { api } from "~/trpc/react";
 import { type RouterOutputs } from "~/trpc/shared";
-import { OrderStatus } from '~/.prisma/client';
+import { useRouter } from "next/navigation";
 
 type Order = RouterOutputs['pluto']['getOrders'][0]
 
@@ -46,9 +46,11 @@ export function AdminOrderRowComponent({ order, setSelectedOrder, highlighted }:
 export function AdminOrderActionsComponent({ order }: { order: Order | null }) {
 
     const updateOrderMutation = api.pluto.updateOrder.useMutation();
+    const router = useRouter();
 
+    const utils = api.useContext();
 
-    const handleUpdateOrder = (
+    const handleUpdateOrder = async (
         { orderId, orderStatus, paymentStatus }: { orderId: string, orderStatus?: Order["orderStatus"], paymentStatus?: Order["paymentStatus"] }
     ) => {
 
@@ -58,6 +60,9 @@ export function AdminOrderActionsComponent({ order }: { order: Order | null }) {
             paymentStatus
         }, 
        )
+    //    this works but ts complains
+       await utils.invalidate();
+       router.refresh()
     }
 
     if (!order) {

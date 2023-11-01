@@ -68,11 +68,11 @@ enum PizzaSize {
 }
 
 model Pizza {
-  id       Int       @id @default(autoincrement())
+  id       String  @id @default(cuid())
   size     PizzaSize
   toppings String[]
-  Order    Order?    @relation(fields: [orderId], references: [id])
-  orderId  Int?
+  orderId  String?
+  order    Order?    @relation(fields: [orderId], references: [id])
 }
 
 enum PaymentStatus {
@@ -80,10 +80,11 @@ enum PaymentStatus {
   PAID
   FAILED
   PAYMENT_ON_DELIVERY
+  REFUNDED
+  CANCELLED
 }
 
 enum OrderStatus {
-  SELECTING
   PREPARATION
   COOKING
   DELIVERY
@@ -91,10 +92,21 @@ enum OrderStatus {
   CANCELLED
 }
 
+model Address {
+  id     String  @id @default(cuid())
+  street String
+  city   String
+  zip    String
+  country String
+  Order  Order[]
+}
+
 model Order {
-  id            Int           @id @default(autoincrement())
+  id            String        @id @default(cuid())
   customerId    String
   customer      User          @relation(fields: [customerId], references: [id])
+  addressId     String
+  address       Address       @relation(fields: [addressId], references: [id])
   pizzas        Pizza[]
   notes         String?
   paymentStatus PaymentStatus

@@ -17,9 +17,8 @@ export default async function Order({
     // get the order from the database
 
 
-    const tempOrderId = searchParams.orderId;
+    const orderId = searchParams.orderId;
     // cast the orderId to a number
-    const orderId = tempOrderId ? parseInt(tempOrderId) : null;
 
     if (!orderId) {
         return <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#525252] to-[#000000] text-white">

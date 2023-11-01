@@ -1,6 +1,5 @@
 
 import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
 import { AppBar } from "../_components/AppBar";
 import { AdminOrderComponent } from "../_components/AdminComponents";

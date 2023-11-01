@@ -138,7 +138,7 @@ export interface Store {
   removePizza: (pizza: _Pizza) => void;
 }
 
-export const usePizzaStore = create<Store>((set, get) => ({
+export const usePizzaStore = create<Store>((set) => ({
   pizzas: [],
   currentPizza: null,
   address: {

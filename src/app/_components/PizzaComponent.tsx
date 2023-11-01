@@ -1,7 +1,7 @@
 "use client";
 
-import { redirect, useRouter } from "next/navigation";
-import { Address, usePizzaStore } from "../pizzaStore";
+import { useRouter } from "next/navigation";
+import { type Address, usePizzaStore } from "../pizzaStore";
 import { PizzaList } from "./PizzaList";
 import { PizzaSizeSelector } from "./PizzaSizeSelector";
 import { PizzaToppingsSelector } from "./PizzaToppingSelector";

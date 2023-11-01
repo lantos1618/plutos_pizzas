@@ -1,6 +1,5 @@
 
 
-import { useRouter } from "next/navigation";
 import { AppBar } from "./_components/AppBar";
 import { OrderArrow, OrderComponent } from "./_components/PizzaComponent";
 import { getServerAuthSession } from "~/server/auth";

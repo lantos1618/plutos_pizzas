@@ -25,13 +25,19 @@ export const plutoRouter = createTRPCRouter({
       notes: z.string().optional()
     }))
     .mutation(async ({ ctx, input }) => {
-      const { pizzas } = input;
+      const { pizzas, address } = input;
       return ctx.db.order.create({
-
         data: {
           orderStatus: "PREPARATION",
           paymentStatus: "PAYMENT_ON_DELIVERY",
-          customerId: ctx.session.user.id,
+          customer: {
+            connect: {
+              id: ctx.session.user.id
+            }
+          },
+          address: {
+            create: address
+          },
           // pizzas
           pizzas: {
             createMany: {
@@ -42,27 +48,52 @@ export const plutoRouter = createTRPCRouter({
         },
         include: {
           pizzas: true,
+          address: true,
           customer: true,
         }
       });
 
     }),
+  updateOrder: protectedProcedure.input(z.object({
+    orderId: z.string(),
+    orderStatus: z.optional(z.enum([
+      "PREPARATION", "COOKING", "DELIVERY", "DELIVERED", "CANCELLED"])),
+    paymentStatus: z.optional(z.enum([
+      "CANCELLED", "PENDING", "PAID", "FAILED", "PAYMENT_ON_DELIVERY", "REFUNDED"])),
+  })).mutation(({ ctx, input }) => {
+    const { orderId, orderStatus, paymentStatus } = input;
+    return ctx.db.order.update({
+      where: { id: orderId },
+      data: {
+        orderStatus: orderStatus,
+        paymentStatus: paymentStatus,
+      },
+      include: {
+        pizzas: true,
+        address: true,
+        customer: true,
+      }
+    });
+  }),
   // orders 
   getOrders: protectedProcedure.query(({ ctx }) => {
     return ctx.db.order.findMany({
       include: { 
         pizzas: true,
         customer: true,
+        address: true,
        },
     });
   }),
   getOrder: protectedProcedure.input(z.object({
-    orderId: z.number()
+    orderId: z.string()
   })).query(({ ctx, input }) => {
     const { orderId } = input;
     return ctx.db.order.findFirst({
       where: { id: orderId },
-      include: { pizzas: true },
+      include: { 
+        pizzas: true,
+       },
     });
   }),
   getCurrentOrder: protectedProcedure.query(async ({ ctx }) => {

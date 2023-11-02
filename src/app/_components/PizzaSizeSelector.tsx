@@ -1,7 +1,6 @@
 "use client";
 
 
-import { api } from "~/trpc/react";
 import { type _PizzaSize, _PizzaTable, usePizzaStore } from "../pizzaStore";
 
 
@@ -45,12 +44,12 @@ export function PizzaSizeSelector() {
         updatePizza(updatedPizza);
     }
 
-    const highlighted = "text-blue-700 fill-orange-400"
-    const unhighlighted = "text-black fill-black"
+    const highlighted = " text-black fill-black "
+    const unhighlighted = " text-gray-500 fill-gray-500 "
 
     return <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-bold">Size</h2>
-        <div className='flex flex-row items-center self-center gap-4'>
+        <div className='flex flex-row items-center self-center gap-4 '>
             <div
                 className={"flex flex-col cursor-pointer " +
                     (currentPizza?.size === "SMALL" ? highlighted : unhighlighted)

@@ -184,8 +184,8 @@ export function OrderComponent({ session }: { session: Session | null }) {
                 <Checkout /> :
                 <PizzaEditor />
             }
-          </>
-          : <>
+          </> : 
+          <>
             <h2 className="text-2xl font-bold">Sign in to order</h2>
             <Link className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" href="/api/auth/signin">Sign in</Link>
           </>

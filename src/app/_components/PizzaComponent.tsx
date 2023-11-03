@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { type Address, usePizzaStore } from "../pizzaStore";
+import { type Address, usePizzaStore, _Topping, _Pizza } from "../pizzaStore";
 import { PizzaList } from "./PizzaList";
 import { PizzaSizeSelector } from "./PizzaSizeSelector";
 import { PizzaToppingsSelector } from "./PizzaToppingSelector";
@@ -29,9 +29,12 @@ export function OrderArrow() {
 
 export function AddNewPizza() {
   const createPizza = usePizzaStore((state) => state.createPizza);
+  const currentPizza = usePizzaStore((state) => state.currentPizza);
 
   const handleAddPizza = () => {
-    createPizza({ size: "LARGE", toppings: [] });
+    const tempPizza: _Pizza = currentPizza ? {...currentPizza} : { size: "LARGE", toppings: [] }; 
+    createPizza(tempPizza);
+
   }
   return <button
     className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
@@ -164,6 +167,8 @@ return (
 export function OrderComponent({ session }: { session: Session | null }) {
   const [checkout, toggleCheckout] = usePizzaStore((state) => [state.checkout, state.toggleCheckout]);
 
+  const currentPizza = usePizzaStore((state) => state.currentPizza);
+  
   const handleCheckout = () => {
     toggleCheckout();
   }
@@ -182,7 +187,7 @@ export function OrderComponent({ session }: { session: Session | null }) {
             {
               checkout ?
                 <Checkout /> :
-                <PizzaEditor />
+                currentPizza ? <PizzaEditor /> : null
             }
           </> : 
           <>

@@ -2,9 +2,7 @@
 import { create } from 'zustand'
 import { type PizzaSize } from '~/.prisma/client'
 
-export type _PizzaSize = Partial<PizzaSize> 
-
-// type PizzaSize = PizzaSize
+export type _PizzaSize = Partial<PizzaSize>
 
 export type _PizzaDetails = {
   sizeInch: number,
@@ -28,6 +26,7 @@ export const _PizzaTable: Record<_PizzaSize, _PizzaDetails> = {
     freeToppings: 5,
     price: 11.99,
   },
+
 }
 
 export const ExtraToppingPrice = 1.49
@@ -47,6 +46,7 @@ export function calcPizzaPrice(pizza: _Pizza) {
 
   const { size, toppings } = pizza
   const toppingsCount = toppings.length
+  console.log("toppingsCount", size)
   const { price, freeToppings } = _PizzaTable[size]
   const extraToppingsAmount = Math.max(0, toppingsCount - freeToppings)
   const extraToppingsPrice = extraToppingsAmount * ExtraToppingPrice
@@ -133,71 +133,92 @@ export interface Store {
   setAddress: (address: Address) => void;
   setPizzas: (pizzas: _Pizza[]) => void;
   createPizza: (pizza: _Pizza) => void;
-  selectPizza: (pizza: _Pizza) => void;
+  selectPizza: (pizza?: _Pizza) => void;
   updatePizza: (pizza: _Pizza) => void;
   removePizza: (pizza: _Pizza) => void;
 }
 
-export const usePizzaStore = create<Store>((set) => ({
-  pizzas: [],
-  currentPizza: null,
-  address: {
-    street: "",
-    city: "",
-    zip: "",
-    country: "",
-  },
-  checkout: false,
-  toggleCheckout: () => set((state) => ({ checkout: !state.checkout })),
-  setNotes: (notes) => set(() => ({ notes })),
-  setAddress: (address) => set(() => ({ address })),
-  setPizzas: (pizzas) => set(() => ({ pizzas })),
-  selectPizza: (pizza) => set(() => ({ currentPizza: pizza, checkout: false })),
-  createPizza: (pizza) => {
-    pizza.id = Math.random().toString(36).substring(2, 9);
-    set((state) => ({ pizzas: [...state.pizzas, pizza], currentPizza: pizza }))
-  },
-  updatePizza: (pizza) => {
-    set((state) => ({
-      pizzas: state.pizzas.map((p) => p.id === pizza.id ? pizza : p),
-      currentPizza: pizza
-    }));
+// export const usePizzaStore = create<Store>((set) => (
+//   {
+//   pizzas: [],
+//   currentPizza: null,
+//   address: {
+//     street: "",
+//     city: "",
+//     zip: "",
+//     country: "",
+//   },
+//   checkout: false,
+//   toggleCheckout: () => set((state) => ({ checkout: !state.checkout })),
+//   setNotes: (notes) => set(() => ({ notes })),
+//   setAddress: (address) => set(() => ({ address })),
+//   setPizzas: (pizzas) => set(() => ({ pizzas })),
+//   selectPizza: (pizza) => set(() => ({ currentPizza: pizza, checkout: false })),
+//   createPizza: (pizza) => {
+//     pizza.id = Math.random().toString(36).substring(2, 9);
+//     set((state) => ({ pizzas: [...state.pizzas, pizza], currentPizza: pizza }))
+//   },
+//   updatePizza: (pizza) => {
+//     set((state) => ({
+//       pizzas: state.pizzas.map((p) => p.id === pizza.id ? pizza : p),
+//       currentPizza: pizza
+//     }));
 
-  },
-  removePizza: (pizza) => {
-    set((state) => ({
-      pizzas: state.pizzas.filter((p) => p.id !== pizza.id),
-    }));
-  }
-}));
+//   },
+//   removePizza: (pizza) => {
+//     set((state) => ({
+//       pizzas: state.pizzas.filter((p) => p.id !== pizza.id),
+//       currentPizza: null
+//     }));
+//   }
+// }));
 
-// import { persist } from 'zustand/middleware'
+import { persist } from 'zustand/middleware'
 
-// export const usePizzaStore = create(
-//   persist<Store>(
-//     (set, get) => ({
-//       pizzas: [],
-//       currentPizza: null,
-//       selectPizza: (pizza) => set(() => ({ currentPizza: pizza })),
-//       createPizza: (pizza) => {
-//         pizza.id = Math.random().toString(36).substring(2, 9);
-//         set((state) => ({ pizzas: [...state.pizzas, pizza], currentPizza: pizza }))
-//       },
-//       updatePizza: (pizza) => {
-//         set((state) => ({
-//           pizzas: state.pizzas.map((p) => p.id === pizza.id ? pizza : p),
-//           currentPizza: pizza
-//         }));
-//       },
-//       removePizza: (pizza) => {
-//         set((state) => ({
-//           pizzas: state.pizzas.filter((p) => p.id !== pizza.id),
-//         }));
-//       }
-//     }),
-//     {
-//       name: 'pizza-store', // unique name
-//       getStorage: () => localStorage, // (optional) by default the 'localStorage' is used
-//     }
-//   )
-// );
+export const usePizzaStore = create(
+  persist<Store>(
+    (set, get) => ({
+      pizzas: [],
+      currentPizza: null,
+      address: {
+        street: "",
+        city: "",
+        zip: "",
+        country: "",
+      },
+      checkout: false,
+      toggleCheckout: () => set((state) => ({ checkout: !state.checkout })),
+      setNotes: (notes) => set(() => ({ notes })),
+      setAddress: (address) => set(() => ({ address })),
+      setPizzas: (pizzas) => set(() => ({ pizzas })),
+      selectPizza: (pizza) => set(() => ({ currentPizza: pizza, checkout: false })),
+      createPizza: (pizza) => {
+        pizza.id = Math.random().toString(36).substring(2, 9);
+        set((state) => ({ 
+          pizzas: [...state.pizzas, pizza], 
+          currentPizza: {
+            size: "LARGE",
+            toppings: [],
+          }
+        }))
+      },
+      updatePizza: (pizza) => {
+        set((state) => ({
+          pizzas: state.pizzas.map((p) => p.id === pizza.id ? pizza : p),
+          currentPizza: pizza
+        }));
+
+      },
+      removePizza: (pizza) => {
+        set((state) => ({
+          pizzas: [...state.pizzas.filter((p) => p.id !== pizza.id)],
+          currentPizza: undefined, 
+        }));
+      }
+    }),
+    {
+      name: 'pizza-store', // unique name
+      getStorage: () => localStorage, // (optional) by default the 'localStorage' is used
+    }
+  )
+);

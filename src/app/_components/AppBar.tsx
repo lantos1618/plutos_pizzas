@@ -7,7 +7,8 @@ import { type Session } from "next-auth";
 import { redirect } from "next/navigation"
 
 export function AppBar({ session }: { session: Session | null }) {
-  const [scrollY, setScrollY] = useState(0);
+  const initialScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+  const [scrollY, setScrollY] = useState(initialScrollY );
   const [background, setBackground] = useState("rgba(0,0,0,0)");
 
   // make the background fade in when scrolling down
@@ -31,20 +32,19 @@ export function AppBar({ session }: { session: Session | null }) {
   }, [scrollY])
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 p-4 text-white" style={{ background }}>
+    <nav className="fixed top-0 left-0 right-0 z-50 p-4 text-white md:flex md:justify-between md:items-center" style={{ background }}>
       <div className="container mx-auto">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center flex-wrap">
           <div
             onClick={() => {
-              redirect("/");
-              // window.location.href = "/";
+              // redirect("/");
+              window.location.href = "/";
             }}
-          className="flex items-center space-x-4 cursor-pointer">
+          className="flex items-center space-x-4 cursor-pointer p-4">
             <Image src={"/images/logo.png"} width={32} height={32} alt={"logo"} />
             <div className="font-bold font-rounded">Pluto Pizzas</div>
           </div>
-          <div className="space-x-4">
-
+          <div className="gap-4 flex items-center justify-center self-center">
             {session ?
               <Link className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" href="/api/auth/signout">Sign out</Link> :
               <Link className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" href="/api/auth/signin">Sign in</Link>

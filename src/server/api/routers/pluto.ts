@@ -125,5 +125,18 @@ export const plutoRouter = createTRPCRouter({
       },
       include: { pizzas: true },
     });
-  })
+  }),
+  getUpcomingOrders: protectedProcedure
+    .input(z.object({
+      customerId: z.string()
+    }))
+    .query(({ ctx }) => {
+      return ctx.db.order.findMany({
+        where: {
+          orderStatus: "DELIVERED",
+          customerId: ctx.session.user.id
+        },
+        include: { pizzas: true },
+      });
+    }),
 });

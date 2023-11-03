@@ -68,7 +68,7 @@ enum PizzaSize {
 }
 
 model Pizza {
-  id       String  @id @default(cuid())
+  id       String    @id @default(cuid())
   size     PizzaSize
   toppings String[]
   orderId  String?
@@ -93,12 +93,12 @@ enum OrderStatus {
 }
 
 model Address {
-  id     String  @id @default(cuid())
-  street String
-  city   String
-  zip    String
+  id      String  @id @default(cuid())
+  street  String
+  city    String
+  zip     String
   country String
-  Order  Order[]
+  Order   Order[]
 }
 
 model Order {
